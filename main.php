@@ -58,19 +58,33 @@
 <div class="container">
 
     <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+        <h1>Starter</h1>
+        <p class="lead" id="dyn_content"></p>
+        <button type="button" id="button_1" class="btn btn-primary">Primary</button>
     </div>
 
 </div><!-- /.container -->
 
 
+
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Latest compiled and minified JavaScript -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins)-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous"></script>
+<script src="/dist/js/ld_main.js"></script>
+<script>
+
+    $('#button_1').on('click', function()
+        {
+            TestMongo();
+        }
+    );
+
+</script>
 
 
 </body></html>

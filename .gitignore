@@ -1,1 +1,5 @@
 connections/
+
+.idea*
+
+*.repo
