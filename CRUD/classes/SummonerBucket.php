@@ -7,7 +7,7 @@
  * Time: 2:50 PM
  */
 
-require_once("bucket.php");
+require_once("Bucket.php");
 
 class SummonerBucket extends bucket
 {
@@ -152,5 +152,25 @@ class SummonerBucket extends bucket
             $retVal = -1;
         }
         return $retVal;
+    }
+
+    function GetAllBucketSummoners() {
+        $summoners = array();
+        $query = "select * from buckets_summoners where bucket_id > 0
+                  order by bucket_id, summoner_id";
+        //$this->mys->next_result();
+        if ($result = $this->mys->query($query)) {
+            while ($row = $result->fetch_assoc()) {
+                $detail = new stdClass();
+                $detail->bucket_id = $row['bucket_id'];
+                $detail->summoner_id = $row['summoner_id'];
+                $detail->created_on = $row["created_on"];
+                $detail->has_been_processed = $row["has_been_processed"];
+                $detail->is_actual_user = $row["is_actual_user"];
+                $summoners[] = $detail;
+            }
+            $result->free();
+        }
+        return $summoners;
     }
 }

@@ -29,15 +29,15 @@ if($max_id < 0) {
 $details->bucket_id = $new_bucket_id;
 echo "<h3>Max Bucket ID: ". $details->bucket_id ."</h3>";
 $mongoObj->InsertIntoCollection($details);
-
-$cursor = $mongoObj->FindAll();
-echo "<h2>Buckets and summoners</h2>";
-foreach($cursor as $document) {
-    //var_dump($document);
-    echo "<h3>Bucket ID: ".$document["bucket_id"]."</h3>";
-    foreach($document["summoners"] as $s_id){
-        echo "<p>Summoner ID: ".$s_id."</p>";
-    }
-    echo "</br>";
-    echo "</br>";
-}
+//
+//$cursor = $mongoObj->FindAll();
+//echo "<h2>Buckets and summoners</h2>";
+//foreach($cursor as $document) {
+//    //var_dump($document);
+//    echo "<h3>Bucket ID: ".$document["bucket_id"]."</h3>";
+//    foreach($document["summoners"] as $s_id){
+//        echo "<p>Summoner ID: ".$s_id."</p>";
+//    }
+//    echo "</br>";
+//    echo "</br>";
+//}

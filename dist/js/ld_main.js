@@ -25,7 +25,41 @@ function TestMongo() {
         dataType: "html",
         success: function(response) {
             //console.log(response);
-            $("#dyn_content").html(response);
+            GetBucketSummonerData();
+        }
+    });
+}
+
+function GetBucketSummonerData() {
+    response = "<h3>Currently loading...</h3>";
+    $("#nosql").html(response);
+    $("#mysql").html(response);
+    GetMongoBucketSummonerData();
+    GetMySQLBucketSummonerData();
+}
+
+function GetMongoBucketSummonerData() {
+    response = ""
+    $.ajax({
+        type: "POST",
+        url: "/CRUD/general/getSummonersFromMongo.php",
+        dataType: "html",
+        success: function(response) {
+            //console.log(response);
+            $("#nosql").html(response);
+        }
+    });
+}
+
+function GetMySQLBucketSummonerData() {
+    response = ""
+    $.ajax({
+        type: "POST",
+        url: "/CRUD/general/getSummonersFromMySQL.php",
+        dataType: "html",
+        success: function(response) {
+            //console.log(response);
+            $("#mysql").html(response);
         }
     });
 }

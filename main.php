@@ -58,9 +58,26 @@
 <div class="container">
 
     <div class="starter-template">
-        <h1>Starter</h1>
-        <p class="lead" id="dyn_content"></p>
-        <button type="button" id="button_1" class="btn btn-primary">Primary</button>
+        <div class="row">
+            <div class="col-md-2">
+                <button type="button" id="button_1" class="btn btn-primary">Show Generated Players from DB</button>
+                <br/>
+                <br/>
+                <button type="button" id="button_2" class="btn btn-primary" disabled>Generate Players</button>
+                <br/>
+                <br/>
+                <button type="button" id="button_3" class="btn btn-primary">Show Processed Players</button>
+            </div>
+            <div class="col-md-10">
+                <div id="dyn_content">
+                    <div id="nosql" class="col-md-6"></div>
+                    <div id="mysql" class="col-md-6"></div>
+                </div>
+            </div>
+
+
+        </div>
+
     </div>
 
 </div><!-- /.container -->
@@ -79,6 +96,12 @@
 <script>
 
     $('#button_1').on('click', function()
+        {
+            GetBucketSummonerData();
+        }
+    );
+
+    $('#button_2').on('click', function()
         {
             TestMongo();
         }
