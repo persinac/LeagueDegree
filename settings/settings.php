@@ -19,3 +19,4 @@ define('LD_MATCHLIST_VERSION', 2.2);
 define('LD_STATS_VERSION', 1.3);
 define('LD_SUMMONER_VERSION', 1.4);
 define('LD_TEAM_VERSION', 2.4);
+define('LD_DEFAULT_REGION', 'na');

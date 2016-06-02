@@ -17,22 +17,16 @@ $mongoObj->SelectCollection($collectionToUse);
 
 
 $cursor = $mongoObj->FindAll();
-$html = "";
-$html .= "<h2>MongoDB</h2>";
-$html .= "<table><tr>";
-$html .= "<th>Bucket ID</th>";
-$html .= "<th>Summoner ID</th>";
-$html .= "<th>Created On</th>";
-$html .= "</tr>";
+$toReturn = array();
 foreach($cursor as $document) {
-    //var_dump($document);
-    foreach($document["summoners"] as $s_id){
-        $html .= "<tr>";
-        $html .= "<td>".$document["bucket_id"]."</td>";
-        $html .= "<td>".$s_id."</td>";
-        $html .= "<td>".$document["created_on"]."</td>";
-        $html .= "</tr>";
+    foreach($document["summoners"] as $summoner){
+        $details = new stdClass();
+        $details->bucket_id = $document["bucket_id"];
+        $details->summoner_id = $summoner['s_id'];
+        $details->created_on = $document["created_on"];
+        $details->has_been_processed = $summoner["has_been_processed"];
+        $details->is_actual_user = $summoner["is_actual_user"];
+        $toReturn[] = $details;
     }
 }
-$html .= "</table>";
-echo $html;
+echo json_encode($toReturn);

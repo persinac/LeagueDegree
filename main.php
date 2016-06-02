@@ -63,15 +63,19 @@
                 <button type="button" id="button_1" class="btn btn-primary">Show Generated Players from DB</button>
                 <br/>
                 <br/>
-                <button type="button" id="button_2" class="btn btn-primary" disabled>Generate Players</button>
+                <button type="button" id="button_2" class="btn btn-primary" >Generate Players</button>
                 <br/>
                 <br/>
-                <button type="button" id="button_3" class="btn btn-primary">Show Processed Players</button>
+                <button type="button" id="button_3" class="btn btn-primary">Process Summoner Ids</button>
+                <br/>
+                <br/>
+                <button type="button" id="button_4" class="btn btn-primary">Show Processed Players</button>
             </div>
             <div class="col-md-10">
                 <div id="dyn_content">
                     <div id="nosql" class="col-md-6"></div>
                     <div id="mysql" class="col-md-6"></div>
+                    <div id="general" class="col-md-12"></div>
                 </div>
             </div>
 
@@ -93,6 +97,7 @@
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous"></script>
 <script src="/dist/js/ld_main.js"></script>
+<script src="/dist/js/HtmlBuilder.js"></script>
 <script>
 
     $('#button_1').on('click', function()
@@ -104,6 +109,12 @@
     $('#button_2').on('click', function()
         {
             TestMongo();
+        }
+    );
+
+    $('#button_3').on('click', function()
+        {
+            ProcessBucketSummonerData();
         }
     );
 

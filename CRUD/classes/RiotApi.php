@@ -8,6 +8,7 @@
  */
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . '/connections/ld_connection.php');
+require_once($root . '/settings/settings.php');
 
 include($root . '/CRUD/classes/Champion.php');
 include($root . '/CRUD/classes/Team.php');
@@ -18,15 +19,19 @@ include($root . '/CRUD/classes/Team.php');
  * We're trying not to perform any of OUR CRUD operations in any of
  * these classes.
  */
-class riot_api {
+class RiotApi {
     var $key = DB_LD_API_KEY;
-    var $region = '';
+    var $region = LD_DEFAULT_REGION;
     var $url_https = 'https://';
     var $url_prefix = '.api.pvp.net/api/lol/';
     public $mys;
 
-    function __construct($reg, $host, $user, $pass, $database) {
-        $this->region = $reg;
+    function __construct(
+        $host = DB_LD_HOST
+        , $user = DB_LD_USER
+        , $pass = DB_LD_PASSWORD
+        , $database = DB_LD_NAME
+    ) {
         $this->NewConnection($host, $user, $pass, $database);
     }
 
@@ -98,15 +103,14 @@ class riot_api {
         return $retVal;
     }
 }
-class DEPRECATED_Buckets extends riot_api {
+class DEPRECATED_Buckets extends RiotApi {
     var $region = '';
     var $challenge_api_version = '4.1';
     var $beginDate = -1;
     var $url_bucket = '';
-    function __construct($reg, $key, $host, $user, $pass, $database) {
-        $this->region = $reg;
+    function __construct($key, $host, $user, $pass, $database) {
         $this->key = $key;
-        parent::__construct($reg, $host, $user, $pass, $database);
+        parent::__construct($host, $user, $pass, $database);
     }
     function TestingOutKeyLocation() {
         return $this->key;
@@ -129,11 +133,16 @@ class DEPRECATED_Buckets extends riot_api {
         return $this->url_bucket;
     }
 }
-class LeagueChampions extends riot_api {
+class LeagueChampions extends RiotApi {
     var $url_champ = '';
-    var $champ_version = '1.2';
-    function __construct($reg, $host, $user, $pass, $database) {
-        parent::__construct($reg, $host, $user, $pass, $database);
+    var $champ_version = LD_CHAMPION_VERSION;
+    function __construct(
+        $host = DB_LD_HOST
+        , $user = DB_LD_USER
+        , $pass = DB_LD_PASSWORD
+        , $database = DB_LD_NAME
+    ) {
+        parent::__construct($host, $user, $pass, $database);
     }
     /* PRIMARY FUNCTION(S) */
     function PrintAllChampions() {
@@ -163,14 +172,21 @@ class LeagueChampions extends riot_api {
         $this->url_champ = $this->GetURLPre() . '' . $data;
     }
 }
-class SummonerInfo extends riot_api {
+class SummonerInfo extends RiotApi {
     var $summoner_id = 0;
     var $summoner_name = '';
     var $url_summoner = '';
-    var $summoner_version = '1.4';
-    function __construct($reg, $host, $user, $pass, $database) {
-        parent::__construct($reg, $host, $user, $pass, $database);
+    var $summoner_version = LD_SUMMONER_VERSION;
+
+    function __construct(
+        $host = DB_LD_HOST
+        , $user = DB_LD_USER
+        , $pass = DB_LD_PASSWORD
+        , $database = DB_LD_NAME
+    ) {
+        parent::__construct($host, $user, $pass, $database);
     }
+
     /* PRIMARY FUNCTION(S) */
     function SearchForSummonerByName($name) {
         $name = str_replace(' ', '%20', $name);
@@ -178,6 +194,7 @@ class SummonerInfo extends riot_api {
         $this->SetSummonerURL($url_postfix);
         return $this->MakeCURLCall($this->url_summoner, "SummonerInfo - SearchForSummonerByName( $name )");
     }
+
     function SearchForSummonerByID($id, $cron = 0) {
         $this->SetSummonerURL($id);
         $string = "";
@@ -188,7 +205,9 @@ class SummonerInfo extends riot_api {
         }
         return $this->MakeCURLCall($this->url_summoner, $string);
     }
+
     /* SETTERS */
+
     /*
      *
      */
@@ -210,13 +229,18 @@ class SummonerInfo extends riot_api {
         return $this->summoner_id;
     }
 }
-class LeagueGames extends riot_api {
+class LeagueGames extends RiotApi {
     var $game_id = 0;
     var $url_game = '';
     var $teams = '';
-    var $game_version = "1.3";
-    function __construct($reg, $host, $user, $pass, $database) {
-        parent::__construct($reg, $host, $user, $pass, $database);
+    var $game_version = LD_GAME_VERSION;
+    function __construct(
+        $host = DB_LD_HOST
+        , $user = DB_LD_USER
+        , $pass = DB_LD_PASSWORD
+        , $database = DB_LD_NAME
+    ) {
+        parent::__construct($host, $user, $pass, $database);
     }
     function GetSummonerRecentGames($summoner_id) {
         $url_postfix = 'by-summoner/' . $summoner_id . '/recent?api_key=' . $this->GetKey();
@@ -238,11 +262,16 @@ class LeagueGames extends riot_api {
 class LeagueMatchDetails extends LeagueGames {
     var $matchid = 0;
     var $url_match = '';
-    var $match_version = '2.2';
-    function __construct($mid, $region, $key, $host, $user, $pass, $database) {
+    var $match_version = LD_MATCH_VERSION;
+    function __construct($mid, $key,
+        $host = DB_LD_HOST
+        , $user = DB_LD_USER
+        , $pass = DB_LD_PASSWORD
+        , $database = DB_LD_NAME
+    ) {
         $this->matchid = $mid;
         $this->key = $key;
-        parent::__construct($region, $host, $user, $pass, $database);
+        parent::__construct($host, $user, $pass, $database);
     }
     /* SETTERS */
     /*

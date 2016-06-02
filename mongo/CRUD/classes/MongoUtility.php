@@ -53,7 +53,15 @@ class MongoUtility
     }
 
     function FindSpecific($query) {
+        return $this->collection->find($query);
+    }
+
+    function ProjectSpecific($query) {
         return $this->collection->find(array(),$query);
+    }
+
+    function UpdateSpecific($query) {
+        $this->collection->update();
     }
 
 }

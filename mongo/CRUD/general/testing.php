@@ -12,8 +12,8 @@ require_once("$root/CRUD/classes/SummonerBucket.php");
 $collectionToUse = "league_degree";
 
 $summonerObj = new SummonerBucket();
-$details = $summonerObj->GenerateNewBucketOfSummonerIds();
-
+$details = $summonerObj->GenerateNewBucketOfSummonerIds(1);
+//var_dump($details->summoners);
 $results = $summonerObj->InsertNewBucketOfSummonerIds($details->bucket_id, $details->summoners);
 
 $mongoObj = new LeagueCollection();
@@ -26,18 +26,7 @@ if($max_id < 0) {
 } else {
     $new_bucket_id = $max_id + 1;
 }
+
 $details->bucket_id = $new_bucket_id;
 echo "<h3>Max Bucket ID: ". $details->bucket_id ."</h3>";
 $mongoObj->InsertIntoCollection($details);
-//
-//$cursor = $mongoObj->FindAll();
-//echo "<h2>Buckets and summoners</h2>";
-//foreach($cursor as $document) {
-//    //var_dump($document);
-//    echo "<h3>Bucket ID: ".$document["bucket_id"]."</h3>";
-//    foreach($document["summoners"] as $s_id){
-//        echo "<p>Summoner ID: ".$s_id."</p>";
-//    }
-//    echo "</br>";
-//    echo "</br>";
-//}

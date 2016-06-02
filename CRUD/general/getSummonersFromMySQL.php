@@ -13,20 +13,4 @@ $collectionToUse = "league_degree";
 
 $summonerObj = new SummonerBucket();
 $details = $summonerObj->GetAllBucketSummoners();
-$html = "";
-$html .= "<h2>MySQL</h2>";
-$html .= "<table><tr>";
-$html .= "<th>Bucket ID</th>";
-$html .= "<th>Summoner ID</th>";
-$html .= "<th>Created On</th>";
-$html .= "</tr>";
-foreach($details as $summoner) {
-    //var_dump($document);
-    $html .= "<tr>";
-    $html .= "<td>".$summoner->bucket_id."</td>";
-    $html .= "<td>".$summoner->summoner_id."</td>";
-    $html .= "<td>".$summoner->created_on."</td>";
-    $html .= "</tr>";
-}
-$html .= "</table>";
-echo $html;
+echo json_encode($details);

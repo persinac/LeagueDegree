@@ -9,7 +9,7 @@
 
 require_once("Bucket.php");
 
-class SummonerBucket extends bucket
+class SummonerBucket extends Bucket
 {
     function __construct($id = -1)
     {
@@ -70,28 +70,50 @@ class SummonerBucket extends bucket
     {
         //generate a random summoner ID between
         //1 and MAX_SUMMONER_ID without any repeats
-        return rand(1, MAX_SUMMONER_ID);
+        $new_id = rand(1, MAX_SUMMONER_ID);
+        while($this->DoesSummonerIdAlreadyExist($new_id) > 0) {
+            $new_id = rand(1, MAX_SUMMONER_ID);
+        }
+        return $new_id;
     }
 
     function GenerateGroupOfSummonerIDs()
     {
         $temp_arr = array();
-        while(sizeof($temp_arr) <= MAX_BUCKET_SIZE) {
+        while(sizeof($temp_arr) < MAX_BUCKET_SIZE) {
             $new_id = $this->GenerateSummonerID();
             $temp_arr[] = $new_id;
         }
         return $temp_arr;
     }
 
-    function GenerateNewBucketOfSummonerIds()
+    function GenerateGroupOfSummonerIDsForMongo()
+    {
+        $temp_arr = array();
+        while(sizeof($temp_arr) < MAX_BUCKET_SIZE) {
+            $new_id = new stdClass();
+            $new_id->s_id = $this->GenerateSummonerID();
+            $new_id->has_been_processed = 9;
+            $new_id->is_actual_user = 9;
+            $temp_arr[] = $new_id;
+        }
+
+        return $temp_arr;
+    }
+
+    function GenerateNewBucketOfSummonerIds($isMongo = -1)
     {
         $detail = new stdClass();
         $detail->bucket_id = $this->GenerateBucketID();
-        $detail->summoners = $this->GenerateGroupOfSummonerIDs();
-        $detail->created_on = date("Y-m-d H:i:s");
-        $detail->has_been_processed = 9;
-        $detail->is_actual_user = 9;
-
+        if($isMongo < 0) {
+            $detail->summoners = $this->GenerateGroupOfSummonerIDs();
+            $detail->created_on = date("Y-m-d H:i:s");
+            $detail->has_been_processed = 9;
+            $detail->is_actual_user = 9;
+        } else {
+            $detail->summoners = $this->GenerateGroupOfSummonerIDsForMongo();
+            $detail->created_on = date("Y-m-d H:i:s");
+        }
         return $detail;
     }
 
@@ -101,21 +123,14 @@ class SummonerBucket extends bucket
         $summonerId = -1;
         $stmt->bind_param('iis', $bucketId, $summonerId, $createdOn);
         for($i = 0; $i < sizeof($bucketOfSummonerIds); $i++) {
-            $summonerId = $bucketOfSummonerIds[$i];
-            $doesExist = $this->DoesSummonerIdAlreadyExist($bucketOfSummonerIds[$i]);
-            //check if the summoner id exists first
-            if($doesExist < 1) {
-                $result = $stmt->execute();
-                if ($result) {
-                    $retVal[] = 1;
-                } else {
-                    $retVal[] = 0;
-                }
-                $this->mys->next_result();
-
+            $summonerId = $bucketOfSummonerIds[$i]->s_id;
+            $result = $stmt->execute();
+            if ($result) {
+                $retVal[] = 1;
             } else {
-                $retVal[] = 9;
+                $retVal[] = 0;
             }
+            $this->mys->next_result();
         }
         return $retVal;
 

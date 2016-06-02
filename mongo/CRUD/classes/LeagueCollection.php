@@ -54,7 +54,7 @@ class LeagueCollection extends MongoUtility {
     function GetAllBucketIds() {
         $this->SelectCollection($this->leagueCollection);
         $bucket_query = array('bucket_id' => 1, '_id' => 0);
-        $result = $this->FindSpecific($bucket_query);
+        $result = $this->ProjectSpecific($bucket_query);
         return $result;
     }
 }

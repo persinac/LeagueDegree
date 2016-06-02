@@ -32,8 +32,7 @@ function TestMongo() {
 
 function GetBucketSummonerData() {
     response = "<h3>Currently loading...</h3>";
-    $("#nosql").html(response);
-    $("#mysql").html(response);
+    $("#dyn_content").html("");
     GetMongoBucketSummonerData();
     GetMySQLBucketSummonerData();
 }
@@ -43,10 +42,10 @@ function GetMongoBucketSummonerData() {
     $.ajax({
         type: "POST",
         url: "/CRUD/general/getSummonersFromMongo.php",
-        dataType: "html",
+        dataType: "json",
         success: function(response) {
             //console.log(response);
-            $("#nosql").html(response);
+            $("#dyn_content").append(CreateTableForShowBucketSummoners(response, 2, "NoSQL"));
         }
     });
 }
@@ -56,10 +55,23 @@ function GetMySQLBucketSummonerData() {
     $.ajax({
         type: "POST",
         url: "/CRUD/general/getSummonersFromMySQL.php",
+        dataType: "json",
+        success: function(response) {
+            //console.log(response);
+            $("#dyn_content").append(CreateTableForShowBucketSummoners(response, 2, "MySQL"));
+        }
+    });
+}
+
+function ProcessBucketSummonerData() {
+    response = "Working..."
+    $.ajax({
+        type: "POST",
+        url: "/CRUD/general/processSummonerIds.php",
         dataType: "html",
         success: function(response) {
             //console.log(response);
-            $("#mysql").html(response);
+            $("#dyn_content").html(response);
         }
     });
 }
