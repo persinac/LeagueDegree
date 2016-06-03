@@ -84,6 +84,7 @@ class RiotApi {
         $stmt->bind_param('issss', $id, $url, $date, $data, $whereDidIComeFrom);
         if ($result = $stmt->execute()) {
             $stmt->close();
+            $this->mys->next_result();
             $retVal = 1;
         } else {
             $retVal = 0;

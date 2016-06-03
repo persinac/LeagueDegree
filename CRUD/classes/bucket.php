@@ -11,7 +11,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once ("$root/connections/ld_connection.php");
 require_once ("$root/settings/settings.php");
 
-class bucket
+class Bucket
 {
     public $mys;
     var $bucket_id;

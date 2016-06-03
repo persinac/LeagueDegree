@@ -59,19 +59,17 @@
 
     <div class="starter-template">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-12">
                 <button type="button" id="button_1" class="btn btn-primary">Show Generated Players from DB</button>
-                <br/>
-                <br/>
-                <button type="button" id="button_2" class="btn btn-primary" >Generate Players</button>
-                <br/>
-                <br/>
-                <button type="button" id="button_3" class="btn btn-primary">Process Summoner Ids</button>
-                <br/>
-                <br/>
-                <button type="button" id="button_4" class="btn btn-primary">Show Processed Players</button>
+                <button type="button" id="button_2" class="btn btn-primary"   >Generate Players</button>
+                <button type="button" id="button_3" class="btn btn-primary" >Process Summoner Ids</button>
+                <button type="button" id="button_4" class="btn btn-primary" disabled >Show Processed Players</button>
+                <button type="button" id="button_5" class="btn btn-primary">Show Actual Players</button>
+                <button type="button" id="button_6" class="btn btn-primary">Get Player Data API</button>
             </div>
-            <div class="col-md-10">
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div id="dyn_content">
                     <div id="nosql" class="col-md-6"></div>
                     <div id="mysql" class="col-md-6"></div>
@@ -115,6 +113,16 @@
     $('#button_3').on('click', function()
         {
             ProcessBucketSummonerData();
+        }
+    );
+    $('#button_5').on('click', function()
+        {
+            ShowActualUsers();
+        }
+    );
+    $('#button_6').on('click', function()
+        {
+            GetProcessedUsersDataFromAPI();
         }
     );
 

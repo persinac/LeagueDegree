@@ -60,8 +60,12 @@ class MongoUtility
         return $this->collection->find(array(),$query);
     }
 
-    function UpdateSpecific($query) {
-        $this->collection->update();
+    function UpdateSpecific($filter, $update) {
+        $this->collection->update($filter, $update);
+    }
+
+    function AggregateMatch($match, $options = array()) {
+        $this->collection->aggregate($match);
     }
 
 }

@@ -154,6 +154,42 @@ class SummonerBucket extends Bucket
         return $retVal;
     }
 
+        function UpdateSummonerHasBeenProcById($value, $summonerId) {
+        $query = "UPDATE buckets_summoners SET has_been_processed = ? WHERE summoner_id = ?";
+
+        if ($summonerId <= 1) {
+            $retVal = 6;
+        } else {
+            $stmt = $this->mys->prepare($query);
+            $stmt->bind_param('ii', $value, $summonerId);
+            if ($result = $stmt->execute()) {
+                $stmt->close();
+                $retVal = 1;
+            } else {
+                $retVal = 3;
+            }
+        }
+        return $retVal;
+    }
+
+    function UpdateSummonerIsActualUserById($value, $summonerId) {
+        $query = "UPDATE buckets_summoners SET is_actual_user = ? WHERE summoner_id = ?";
+
+        if ($summonerId <= 1) {
+            $retVal = 6;
+        } else {
+            $stmt = $this->mys->prepare($query);
+            $stmt->bind_param('ii', $value, $summonerId);
+            if ($result = $stmt->execute()) {
+                $stmt->close();
+                $retVal = 1;
+            } else {
+                $retVal = 3;
+            }
+        }
+        return $retVal;
+    }
+
     function DoesSummonerIdAlreadyExist($summonerId)
     {
         $query = "SELECT count(*) AS id FROM buckets_summoners WHERE summoner_id = ".$summonerId.";";
@@ -187,5 +223,17 @@ class SummonerBucket extends Bucket
             $result->free();
         }
         return $summoners;
+    }
+
+    function CheckControlTable($process) {
+        $query = 'select enabled from control where process = "'.$process.'"';
+        $returnVal = -1;
+        if ($result = $this->mys->query($query)) {
+            while ($row = $result->fetch_assoc()) {
+                $returnVal = $row["enabled"];
+            }
+            $result->free();
+        }
+        return $returnVal;
     }
 }

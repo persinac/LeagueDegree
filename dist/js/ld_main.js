@@ -24,8 +24,12 @@ function TestMongo() {
         url: "/mongo/CRUD/general/testing.php",
         dataType: "html",
         success: function(response) {
-            //console.log(response);
-            GetBucketSummonerData();
+           if(response == 1) {
+               GetBucketSummonerData();
+           } else {
+               $("#dyn_content").html("<h3>PROCESS IS CURRENTLY DISABLED</h3>");
+           }
+
         }
     });
 }
@@ -33,11 +37,13 @@ function TestMongo() {
 function GetBucketSummonerData() {
     response = "<h3>Currently loading...</h3>";
     $("#dyn_content").html("");
-    GetMongoBucketSummonerData();
-    GetMySQLBucketSummonerData();
+    var start = new Date().getTime();
+    var t0 = performance.now();
+    GetMongoBucketSummonerData(t0);
+    GetMySQLBucketSummonerData(t0);
 }
 
-function GetMongoBucketSummonerData() {
+function GetMongoBucketSummonerData(startTime) {
     response = ""
     $.ajax({
         type: "POST",
@@ -45,12 +51,15 @@ function GetMongoBucketSummonerData() {
         dataType: "json",
         success: function(response) {
             //console.log(response);
-            $("#dyn_content").append(CreateTableForShowBucketSummoners(response, 2, "NoSQL"));
+            var end = performance.now();
+            var execTime = (end - startTime) / 1000.0;
+            var title = "NoSQL - " + execTime;
+            $("#dyn_content").append(CreateTableForShowBucketSummoners(response, 2, title));
         }
     });
 }
 
-function GetMySQLBucketSummonerData() {
+function GetMySQLBucketSummonerData(startTime) {
     response = ""
     $.ajax({
         type: "POST",
@@ -58,16 +67,47 @@ function GetMySQLBucketSummonerData() {
         dataType: "json",
         success: function(response) {
             //console.log(response);
-            $("#dyn_content").append(CreateTableForShowBucketSummoners(response, 2, "MySQL"));
+            var end = performance.now();
+            var execTime = (end - startTime) / 1000.0;
+            var title = "MySQL - " + execTime;
+            $("#dyn_content").append(CreateTableForShowBucketSummoners(response, 2, title));
         }
     });
 }
 
 function ProcessBucketSummonerData() {
-    response = "Working..."
+    response = "Working...";
+    $("#dyn_content").html(response);
     $.ajax({
         type: "POST",
         url: "/CRUD/general/processSummonerIds.php",
+        dataType: "html",
+        success: function(response) {
+            //console.log(response);
+            $("#dyn_content").html(response);
+        }
+    });
+}
+
+function ShowActualUsers() {
+    response = "Working..."
+    $.ajax({
+        type: "POST",
+        url: "/CRUD/general/getActualUsers.php",
+        dataType: "html",
+        success: function(response) {
+            //console.log(response);
+            $("#dyn_content").html(response);
+        }
+    });
+}
+
+function GetProcessedUsersDataFromAPI() {
+    response = "Working...";
+    $("#dyn_content").html(response);
+    $.ajax({
+        type: "POST",
+        url: "/CRUD/general/getProcessedUsersDataFromAPI.php",
         dataType: "html",
         success: function(response) {
             //console.log(response);

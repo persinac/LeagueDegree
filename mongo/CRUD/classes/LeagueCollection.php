@@ -57,4 +57,20 @@ class LeagueCollection extends MongoUtility {
         $result = $this->ProjectSpecific($bucket_query);
         return $result;
     }
+
+    function UpdateSpecifcSummonerById($bucket_id, $summoner_id, $field, $value) {
+        /*
+         *  db.league_degree.update({bucket_id: 1, "summoners.s_id":1603136}, {'$set':{"summoners.$.has_been_processed":1}});
+         * */
+        $filter = array('bucket_id' => $bucket_id, 'summoners.s_id'=>$summoner_id);
+        $update = array('$set' => array('summoners.$.'.$field.'' => $value));
+        $result = $this->UpdateSpecific($filter, $update);
+        return $result;
+    }
+
+    function GetActualPlayers($arrayName, $fieldToSearch, $value) {
+        $result = $this->FindAll();
+        return $result;
+
+    }
 }

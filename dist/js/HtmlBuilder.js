@@ -9,13 +9,15 @@ function CreateTableForShowBucketSummoners(data, numOfTables, title) {
     html += "<table><tr>";
     html += "<th>Bucket ID</th>";
     html += "<th>Summoner ID</th>";
-    html += "<th>Created On</th>";
+    html += "<th>Actual User?</th>";
+    html += "<th>Generated On</th>";
     html += "</tr>";
 
     $.each( data, function( i, val_1 ) {
         html += "<tr>";
         html += "<td>" + val_1.bucket_id + "</td>";
         html += "<td>" + val_1.summoner_id + "</td>";
+        html += "<td>" + val_1.is_actual_user + "</td>";
         html += "<td>" + val_1.created_on + "</td>";
         html += "</tr>";
     });
